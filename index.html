@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Examples</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link href="" rel="stylesheet">
+    <script type="text/javascript" src='lib/echarts.common.min.js'></script>
+</head>
+<style type="text/css">
+    #btnStart {
+        margin: 10px auto;
+        display: block;
+    }
+    
+    .content>div {
+        width: 800px;
+        height: 600px;
+        margin: 20px auto;
+    }
+</style>
+
+<body>
+
+    <button id='btnStart'>sort</button>
+    <div class='content'>
+        <div id='bubbleSort'></div>
+    </div>
+    </div>
+
+    <script type="text/javascript">
+        var t = new Array(50).join('a').split('a').map(function(e, i) {
+            return i + 1;
+        })
+        var tx = new Array(50).join('a').split('a').map(function(e, i) {
+            return i + 1;
+        })
+
+        var ty = [];
+        while (t.length > 0) {
+            ty = ty.concat(t.splice(Math.floor(Math.random() * t.length), 1))
+        }
+
+        var bubbleSortChart = echarts.init(document.getElementById('bubbleSort'));
+
+        var option = {
+            animation: false,
+            title: {
+                //text: '冒泡排序（Bubble Sort）',
+                x: 'center',
+                y: 0
+            },
+            grid: {
+                x: '7%',
+                y: '7%'
+            },
+            tooltip: {
+                formatter: '数值：{c}'
+            },
+            xAxis: {
+                type: 'category',
+                　　　　show: true,
+                　　splitLine: {　　　　
+                    show: false　　
+                },
+                data: tx
+            },
+            yAxis: {
+                type: 'value',
+                min: 0
+            },
+            series: [{
+                name: 'shaonthu',
+                type: 'bar',
+                data: ty
+
+            }]
+        };
+        bubbleSortChart.setOption(option);
+
+        window.addEventListener('resize', function() {
+            bubbleSortChart.resize();
+        });
+        document.getElementById('btnStart').addEventListener('click', function() {
+            var count = 0;
+            var len = ty.length;
+            for (var i = 0; i < len; i++) {
+                for (var j = 0; j < len - 1 - i; j++) {
+                    if (ty[j] > ty[j + 1]) { //相邻元素两两对比
+                        var temp = ty[j + 1]; //元素交换
+                        ty[j + 1] = ty[j];
+                        ty[j] = temp;
+
+                        // sleep(500);
+
+                        // var tempdate=new Date().getTime()+100;
+                        // while(new Date().getTime()<tempdate){
+                        //     // console.log(new Date().getTime());
+                        // }
+                    }
+
+                    count++;
+                    (function(list, time) {
+                        var listT = [];
+                        listT = listT.concat(list);
+                        setTimeout(function() {
+                            console.log(listT);
+
+                            option.series[0].data = listT;
+                            bubbleSortChart.setOption(option);
+                        }, time * 50);
+
+                    })(ty, count);
+                }
+            }
+
+
+        });
+
+        function sleep(numberMillis) {
+            var now = new Date();
+            var exitTime = now.getTime() + numberMillis;
+            while (true) {
+                now = new Date();
+                if (now.getTime() > exitTime) {
+                    return;
+                }
+            }
+        }
+
+        /*
+        file:///C:/Users/Ralf/Documents/temp/testhtml/index.html
+        */
+    </script>
+</body>
+
+</html>
